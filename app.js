@@ -1,213 +1,176 @@
-/* ===================================================
-   AVIATION CENTER SGC
-   app.js - Sprint 2
-=================================================== */
+// ===================================================
+// AVIATION CENTER SGC
+// app.js - Sprint 2
+// ===================================================
 
 console.clear();
+console.log("Aviation Center SGC iniciado.");
 
-console.log("======================================");
-console.log(" Aviation Center SGC v0.2");
-console.log(" Sistema iniciado com sucesso.");
-console.log("======================================");
+document.addEventListener("DOMContentLoaded", iniciarSistema);
 
-// Aguarda carregar toda a página
-document.addEventListener("DOMContentLoaded", () => {
+function iniciarSistema() {
 
-    iniciarSistema();
+    configurarMenu();
 
-});
+    configurarPesquisa();
 
-// =============================
-// Inicialização
-// =============================
-
-function iniciarSistema(){
-
-    mostrarTela("dashboard");
-
-    atualizarDataHora();
-
-    setInterval(atualizarDataHora,1000);
+    configurarBotaoNovo();
 
 }
 
-// =============================
-// Navegação
-// =============================
+// ===========================================
+// MENU
+// ===========================================
 
-function mostrarTela(id){
+function configurarMenu() {
 
-    const paginas = document.querySelectorAll(".pagina");
+    const menus = document.querySelectorAll(".sidebar li");
 
-    paginas.forEach(pagina=>{
+    menus.forEach(item => {
 
-        pagina.classList.add("oculto");
+        item.addEventListener("click", function () {
+
+            menus.forEach(menu => {
+
+                menu.classList.remove("active");
+
+            });
+
+            this.classList.add("active");
+
+            abrirModulo(this.innerText);
+
+        });
 
     });
 
-    document.getElementById(id).classList.remove("oculto");
+}
 
-    atualizarMenu(id);
+// ===========================================
+// MÓDULOS
+// ===========================================
+
+function abrirModulo(nome) {
+
+    nome = nome.toLowerCase();
+
+    if (nome.includes("dashboard")) {
+
+        console.log("Dashboard aberto");
+
+    }
+
+    else if (nome.includes("instrumentos")) {
+
+        console.log("Instrumentos aberto");
+
+        alert("Sprint 3\n\nCadastro de Instrumentos será aberto aqui.");
+
+    }
+
+    else if (nome.includes("sess")) {
+
+        alert("Módulo Sessões");
+
+    }
+
+    else if (nome.includes("aeronaves")) {
+
+        alert("Módulo Aeronaves");
+
+    }
+
+    else if (nome.includes("clientes")) {
+
+        alert("Módulo Clientes");
+
+    }
+
+    else if (nome.includes("equipamentos")) {
+
+        alert("Módulo Equipamentos");
+
+    }
+
+    else if (nome.includes("hist")) {
+
+        alert("Módulo Histórico");
+
+    }
+
+    else if (nome.includes("auditoria")) {
+
+        alert("Módulo Auditoria");
+
+    }
+
+    else if (nome.includes("relatórios")) {
+
+        alert("Módulo Relatórios");
+
+    }
+
+    else if (nome.includes("config")) {
+
+        alert("Configurações");
+
+    }
 
 }
 
-// =============================
-// Menu
-// =============================
+// ===========================================
+// PESQUISA
+// ===========================================
 
-function atualizarMenu(id){
+function configurarPesquisa() {
 
-    const menus = document.querySelectorAll(".menu");
+    const campo = document.querySelector("input");
 
-    menus.forEach(menu=>{
+    if (!campo) return;
 
-        menu.classList.remove("active");
+    campo.addEventListener("keyup", function () {
+
+        console.log("Pesquisar:", this.value);
 
     });
 
-    if(id==="dashboard"){
+}
 
-        menus[0].classList.add("active");
+// ===========================================
+// BOTÃO NOVO INSTRUMENTO
+// ===========================================
 
-    }
+function configurarBotaoNovo() {
 
-    if(id==="instrumentos"){
+    const botao = document.querySelector("button");
 
-        menus[1].classList.add("active");
+    if (!botao) return;
 
-    }
+    botao.addEventListener("click", novoInstrumento);
 
 }
 
-// =============================
-// Relógio
-// =============================
+function novoInstrumento() {
 
-function atualizarDataHora(){
-
-    let agora = new Date();
-
-    let data =
-        agora.toLocaleDateString("pt-BR");
-
-    let hora =
-        agora.toLocaleTimeString("pt-BR");
-
-    let elemento =
-        document.getElementById("dataHora");
-
-    if(elemento){
-
-        elemento.innerHTML =
-        data + " | " + hora;
-
-    }
+    alert(
+        "Novo Instrumento\n\n" +
+        "Esta função será implementada no Sprint 3."
+    );
 
 }
 
-// =============================
-// Pesquisa
-// =============================
+// ===========================================
+// DASHBOARD
+// ===========================================
 
-const pesquisa =
-document.getElementById("pesquisa");
+function atualizarDashboard() {
 
-if(pesquisa){
-
-pesquisa.addEventListener("keyup",function(){
-
-let filtro=this.value.toUpperCase();
-
-let tabela=
-document.querySelectorAll("#instrumentos table tbody tr");
-
-tabela.forEach(function(linha){
-
-let texto=
-linha.innerText.toUpperCase();
-
-if(texto.indexOf(filtro)>-1){
-
-linha.style.display="";
-
-}else{
-
-linha.style.display="none";
+    console.log("Dashboard atualizado.");
 
 }
 
-});
+// ===========================================
+// LOG
+// ===========================================
 
-});
-
-}
-
-// =============================
-// Botão Novo Instrumento
-// =============================
-
-function novoInstrumento(){
-
-alert("Cadastro de Instrumentos\n\nSprint 3");
-
-}
-
-// =============================
-// Abrir Instrumento
-// =============================
-
-function abrirInstrumento(id){
-
-alert("Abrindo instrumento:\n\n"+id);
-
-}
-
-// =============================
-// Dashboard
-// =============================
-
-function atualizarDashboard(){
-
-console.log("Dashboard atualizado.");
-
-}
-
-// =============================
-// Histórico
-// =============================
-
-function abrirHistorico(){
-
-alert("Histórico\n\nEm desenvolvimento.");
-
-}
-
-// =============================
-// Auditoria
-// =============================
-
-function abrirAuditoria(){
-
-alert("Auditoria\n\nEm desenvolvimento.");
-
-}
-
-// =============================
-// Sessões
-// =============================
-
-function abrirSessao(){
-
-alert("Sessões\n\nSprint 4");
-
-}
-
-// =============================
-// Configurações
-// =============================
-
-function abrirConfiguracoes(){
-
-alert("Configurações");
-
-}
+console.log("app.js carregado com sucesso.");
