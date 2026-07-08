@@ -1,6 +1,6 @@
 /* ===================================================
    AVIATION CENTER SGC
-   style.css - Versão 0.1 Alpha
+   Sprint 2 - Dashboard + Instrumentos
 =================================================== */
 
 *{
@@ -10,29 +10,44 @@
 }
 
 body{
+
     font-family:Arial, Helvetica, sans-serif;
     background:#0f172a;
-    color:#ffffff;
+    color:#fff;
     display:flex;
     min-height:100vh;
+
 }
 
-/* SIDEBAR */
+/* Sidebar */
 
 .sidebar{
 
     width:260px;
     background:#111827;
+    border-right:1px solid #1f2937;
     padding:25px;
-    border-right:1px solid #243244;
 
 }
 
-.sidebar h2{
+.logo{
 
-    color:#4ea8ff;
-    margin-bottom:35px;
-    font-size:24px;
+    text-align:center;
+    margin-bottom:40px;
+
+}
+
+.logo h2{
+
+    color:#38bdf8;
+    margin-bottom:5px;
+
+}
+
+.logo p{
+
+    color:#94a3b8;
+    font-size:14px;
 
 }
 
@@ -44,81 +59,58 @@ body{
 
 .sidebar li{
 
-    padding:14px;
-    margin-bottom:8px;
-
+    padding:15px;
     border-radius:10px;
-
+    margin-bottom:8px;
     cursor:pointer;
-
     transition:.3s;
-
-    color:#d1d5db;
+    color:#cbd5e1;
 
 }
 
 .sidebar li:hover{
 
-    background:#1e3a8a;
+    background:#1e293b;
 
 }
 
-.sidebar .active{
+.sidebar li.active{
 
     background:#2563eb;
-
     color:white;
 
 }
 
-/* CONTEÚDO */
+/* Conteúdo */
 
 .content{
 
     flex:1;
-
-    padding:35px;
-
-}
-
-/* HEADER */
-
-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:35px;
+    padding:40px;
+    overflow:auto;
 
 }
 
-header h1{
+h1{
 
-    font-size:36px;
-
-}
-
-header p{
-
-    color:#94a3b8;
-
-    margin-top:8px;
+    margin-bottom:25px;
+    font-size:34px;
 
 }
 
-/* CARDS */
+h2{
+
+    margin:25px 0 15px;
+
+}
+
+/* Cards */
 
 .cards{
 
     display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
-
     margin-bottom:40px;
 
 }
@@ -126,111 +118,66 @@ header p{
 .card{
 
     background:#1e293b;
-
-    border-radius:15px;
-
-    padding:25px;
-
     border:1px solid #334155;
-
+    border-radius:15px;
+    padding:25px;
     transition:.3s;
 
 }
 
 .card:hover{
 
-    transform:translateY(-5px);
-
-    border-color:#3b82f6;
+    transform:translateY(-6px);
+    border-color:#38bdf8;
 
 }
 
 .card h3{
 
     color:#94a3b8;
-
-    margin-bottom:20px;
-
-    font-weight:normal;
+    margin-bottom:15px;
+    font-size:15px;
 
 }
 
 .card h1{
 
+    color:#38bdf8;
     font-size:42px;
-
-    color:#4ea8ff;
 
 }
 
-/* TABELA */
+/* Pesquisa */
 
-.table{
+input{
 
+    width:350px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
     background:#1e293b;
-
-    padding:25px;
-
-    border-radius:15px;
-
+    color:white;
+    outline:none;
     border:1px solid #334155;
 
 }
 
-.table h2{
+input:focus{
 
-    margin-bottom:20px;
-
-}
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
+    border-color:#38bdf8;
 
 }
 
-th{
-
-    background:#2563eb;
-
-    padding:15px;
-
-    text-align:left;
-
-}
-
-td{
-
-    padding:15px;
-
-    border-bottom:1px solid #334155;
-
-}
-
-tr:hover{
-
-    background:#273549;
-
-}
-
-/* BOTÕES */
+/* Botão */
 
 button{
 
     background:#2563eb;
-
     color:white;
-
     border:none;
-
-    padding:12px 22px;
-
-    border-radius:10px;
-
+    padding:12px 20px;
+    border-radius:8px;
     cursor:pointer;
-
     transition:.3s;
 
 }
@@ -241,36 +188,96 @@ button:hover{
 
 }
 
-/* RESPONSIVO */
+/* Tabela */
 
-@media(max-width:1200px){
+table{
 
-.cards{
-
-grid-template-columns:repeat(2,1fr);
+    width:100%;
+    border-collapse:collapse;
+    background:#1e293b;
+    border-radius:12px;
+    overflow:hidden;
 
 }
 
+th{
+
+    background:#2563eb;
+    padding:15px;
+    text-align:left;
+
 }
 
-@media(max-width:768px){
+td{
+
+    padding:15px;
+    border-bottom:1px solid #334155;
+
+}
+
+tr:hover{
+
+    background:#273549;
+
+}
+
+/* Ocultar páginas */
+
+.oculto{
+
+    display:none;
+
+}
+
+/* Scroll */
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#2563eb;
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111827;
+
+}
+
+/* Responsivo */
+
+@media(max-width:900px){
 
 body{
 
-flex-direction:column;
+    flex-direction:column;
 
 }
 
 .sidebar{
 
-width:100%;
+    width:100%;
+    border-right:none;
+    border-bottom:1px solid #334155;
 
 }
 
 .cards{
 
-grid-template-columns:1fr;
+    grid-template-columns:1fr;
 
 }
 
-		}
+input{
+
+    width:100%;
+
+}
+
+}
