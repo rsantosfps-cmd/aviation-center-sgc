@@ -1,1 +1,340 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aviation Center SGC</title><link rel="stylesheet" href="style.css"></head><body><div class="sidebar"><h2>🚁 Aviation Center</h2><ul><li class="active">🏠 Dashboard</li><li>🧰 Instrumentos</li><li>📋 Sessões</li><li>🚁 Aeronaves</li><li>👥 Clientes</li><li>🧪 Equipamentos</li><li>📚 Histórico</li><li>🔎 Auditoria</li><li>📄 Relatórios</li><li>⚙ Configurações</li></ul></div><div class="content"><h1>Dashboard</h1><p>Base do Sprint 2.</p><div class="cards"><div class="card"><h3>Calibrações Hoje</h3><h1>08</h1></div><div class="card"><h3>Instrumentos</h3><h1>314</h1></div></div><h2>Instrumentos</h2><table><tr><th>ID</th><th>Instrumento</th><th>P/N</th></tr><tr><td>INS-001</td><td>Altímetro</td><td>5934P</td></tr></table></div><script src="app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviation Center SGC v0.3.0</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>🚁 Aviation Center</h2>
+      <p>SGC v0.3.0</p>
+    </div>
+
+    <nav>
+      <button class="menu-item active" data-page="dashboard">🏠 Dashboard</button>
+      <button class="menu-item" data-page="sessao">📋 Nova Sessão</button>
+      <button class="menu-item" data-page="instrumentos">🧰 Instrumentos</button>
+      <button class="menu-item" data-page="clientes">👥 Clientes</button>
+      <button class="menu-item" data-page="aeronaves">🚁 Aeronaves</button>
+      <button class="menu-item" data-page="equipamentos">🧪 Equipamentos</button>
+      <button class="menu-item" data-page="historico">📚 Histórico</button>
+      <button class="menu-item" data-page="configuracoes">⚙️ Configurações</button>
+    </nav>
+  </aside>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+
+    <!-- TOPO -->
+    <header class="topbar">
+      <div>
+        <h1>Aviation Center SGC</h1>
+        <p>Sistema de Gerenciamento de Calibração</p>
+      </div>
+
+      <div class="usuario">
+        <strong>Rafael Santos</strong>
+        <span>Testador Oficial</span>
+      </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page active-page">
+      <h2>Dashboard</h2>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Instrumentos</h3>
+          <span id="totalInstrumentos">0</span>
+        </div>
+
+        <div class="card">
+          <h3>Calibrações Hoje</h3>
+          <span>0</span>
+        </div>
+
+        <div class="card">
+          <h3>Pendentes</h3>
+          <span>0</span>
+        </div>
+
+        <div class="card">
+          <h3>Alertas</h3>
+          <span>0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESSÃO DE CALIBRAÇÃO -->
+    <section id="sessao" class="page">
+      <div class="page-header">
+        <h2>Nova Sessão de Calibração</h2>
+        <button class="btn-primary">💾 Salvar Sessão</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>OS</label>
+          <input type="text" placeholder="2026-001">
+        </div>
+
+        <div class="form-group">
+          <label>Cliente</label>
+          <input type="text" placeholder="Helisul">
+        </div>
+
+        <div class="form-group">
+          <label>Aeronave</label>
+          <input type="text" placeholder="AS350">
+        </div>
+
+        <div class="form-group">
+          <label>Modelo</label>
+          <input type="text" placeholder="B2">
+        </div>
+
+        <div class="form-group">
+          <label>Prefixo</label>
+          <input type="text" placeholder="PR-HXX">
+        </div>
+
+        <div class="form-group">
+          <label>Técnico</label>
+          <input type="text" placeholder="Rafael Santos">
+        </div>
+
+        <div class="form-group">
+          <label>Equipamento Padrão</label>
+          <input type="text" placeholder="Aeroflex 3920">
+        </div>
+
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date">
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active">📄 Relatório 1</button>
+        <button class="tab">📄 Relatório 2</button>
+        <button class="tab">📄 Relatório 3</button>
+        <button class="tab">📸 Evidências</button>
+      </div>
+
+      <div class="tab-content">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Instrumento</label>
+            <input type="text" placeholder="Altímetro">
+          </div>
+
+          <div class="form-group">
+            <label>P/N</label>
+            <input type="text" placeholder="5934P">
+          </div>
+
+          <div class="form-group">
+            <label>S/N</label>
+            <input type="text" placeholder="001245">
+          </div>
+
+          <div class="form-group">
+            <label>Resultado</label>
+            <select>
+              <option>Aprovado</option>
+              <option>Reprovado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Observações</label>
+          <textarea rows="5" placeholder="Informações da calibração..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTRUMENTOS -->
+    <section id="instrumentos" class="page">
+      <div class="page-header">
+        <h2>Instrumentos</h2>
+        <button class="btn-primary">+ Novo Instrumento</button>
+      </div>
+
+      <input type="search" placeholder="Pesquisar por P/N, S/N ou Instrumento">
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Instrumento</th>
+            <th>P/N</th>
+            <th>S/N</th>
+            <th>Fabricante</th>
+            <th>Prefixo</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>INS-001</td>
+            <td>Altímetro</td>
+            <td>5934P</td>
+            <td>001245</td>
+            <td>Collins</td>
+            <td>PR-HXX</td>
+            <td><span class="status-ok">Em dia</span></td>
+            <td>✏️ 🗑️</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CLIENTES -->
+    <section id="clientes" class="page">
+      <div class="page-header">
+        <h2>Clientes</h2>
+        <button class="btn-primary">+ Novo Cliente</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Contato</th>
+            <th>Telefone</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Helisul</td>
+            <td>João Silva</td>
+            <td>(21) 99999-9999</td>
+            <td>✏️ 🗑️</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- AERONAVES -->
+    <section id="aeronaves" class="page">
+      <div class="page-header">
+        <h2>Aeronaves</h2>
+        <button class="btn-primary">+ Nova Aeronave</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Prefixo</th>
+            <th>Modelo</th>
+            <th>Operador</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>PR-HXX</td>
+            <td>AS350 B2</td>
+            <td>Helisul</td>
+            <td>✏️ 🗑️</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- EQUIPAMENTOS -->
+    <section id="equipamentos" class="page">
+      <div class="page-header">
+        <h2>Equipamentos Padrão</h2>
+        <button class="btn-primary">+ Novo Equipamento</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Equipamento</th>
+            <th>Modelo</th>
+            <th>Validade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Aeroflex</td>
+            <td>3920</td>
+            <td>12/01/2027</td>
+            <td><span class="status-ok">Em dia</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section id="historico" class="page">
+      <h2>Histórico</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>OS</th>
+            <th>Cliente</th>
+            <th>Aeronave</th>
+            <th>Data</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>2026-001</td>
+            <td>Helisul</td>
+            <td>PR-HXX</td>
+            <td>10/07/2026</td>
+            <td>Concluída</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section id="configuracoes" class="page">
+      <h2>Configurações</h2>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Empresa</h3>
+          <p>Configurar dados da Aviation Center.</p>
+        </div>
+
+        <div class="card">
+          <h3>Usuários</h3>
+          <p>Gerenciar acessos.</p>
+        </div>
+
+        <div class="card">
+          <h3>Backup</h3>
+          <p>Exportar e importar dados.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
