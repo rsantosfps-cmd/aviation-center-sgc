@@ -1,7 +1,6 @@
-/* ===================================================
-   AVIATION CENTER SGC
-   Sprint 2 - style.css
-=================================================== */
+/* ======================================================
+   AVIATION CENTER SGC v0.3.0
+====================================================== */
 
 *{
     margin:0;
@@ -9,112 +8,599 @@
     box-sizing:border-box;
 }
 
+:root{
+
+    --bg:#0f172a;
+    --sidebar:#111827;
+    --card:#1e293b;
+    --cardHover:#273549;
+    --border:#334155;
+
+    --primary:#2563eb;
+    --primaryHover:#1d4ed8;
+
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#dc2626;
+
+    --text:#ffffff;
+    --text2:#94a3b8;
+
+}
+
 body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#0f172a;
-    color:#fff;
+
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+
+}
+
+/* ========================= */
+
+.app{
+
     display:flex;
     min-height:100vh;
+
 }
+
+/* ========================= */
+/* SIDEBAR */
+/* ========================= */
 
 .sidebar{
+
     width:260px;
-    background:#111827;
+    background:var(--sidebar);
+    border-right:1px solid var(--border);
+
+}
+
+.logo{
+
     padding:25px;
-    border-right:1px solid #334155;
+    text-align:center;
+    border-bottom:1px solid var(--border);
+
 }
 
-.sidebar h2{
+.logo h2{
+
     color:#38bdf8;
-    margin-bottom:30px;
-}
-
-.sidebar ul{
-    list-style:none;
-}
-
-.sidebar li{
-    padding:14px;
     margin-bottom:8px;
+
+}
+
+.logo p{
+
+    color:var(--text2);
+    font-size:13px;
+
+}
+
+.sidebar nav{
+
+    display:flex;
+    flex-direction:column;
+    padding:20px;
+
+}
+
+.menu-item{
+
+    border:none;
+    background:none;
+    color:#cbd5e1;
+    text-align:left;
+
+    padding:15px;
+
     border-radius:10px;
+
     cursor:pointer;
-    transition:.3s;
+
+    margin-bottom:8px;
+
+    transition:.25s;
+
 }
 
-.sidebar li:hover{
+.menu-item:hover{
+
     background:#1e293b;
+
 }
 
-.sidebar li.active{
-    background:#2563eb;
+.menu-item.active{
+
+    background:var(--primary);
+    color:white;
+
 }
 
-.content{
+/* ========================= */
+/* MAIN */
+/* ========================= */
+
+.main-content{
+
     flex:1;
-    padding:35px;
+    padding:30px;
+
 }
+
+/* ========================= */
+/* TOPBAR */
+/* ========================= */
+
+.topbar{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.topbar h1{
+
+    margin-bottom:5px;
+
+}
+
+.topbar p{
+
+    color:var(--text2);
+
+}
+
+.usuario{
+
+    text-align:right;
+
+}
+
+/* ========================= */
+/* DASHBOARD */
+/* ========================= */
 
 .cards{
+
     display:grid;
+
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
     gap:20px;
-    margin:30px 0;
+
+    margin-top:25px;
+
 }
 
 .card{
-    background:#1e293b;
-    padding:25px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
     border-radius:15px;
-    border:1px solid #334155;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#38bdf8;
+
 }
 
 .card h3{
-    color:#94a3b8;
-    margin-bottom:10px;
+
+    color:var(--text2);
+
+    margin-bottom:15px;
+
 }
 
-.card h1{
+.card span{
+
+    font-size:34px;
+
+    font-weight:bold;
+
     color:#38bdf8;
-    font-size:40px;
+
 }
+
+/* ========================= */
+/* PAGE */
+/* ========================= */
+
+.page{
+
+    display:none;
+
+}
+
+.active-page{
+
+    display:block;
+
+}
+
+/* ========================= */
+/* PAGE HEADER */
+/* ========================= */
+
+.page-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
+
+button{
+
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+.btn-primary{
+
+    background:var(--primary);
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:12px 20px;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primaryHover);
+
+}
+
+.btn-secondary{
+
+    background:#475569;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:12px 20px;
+
+}
+
+.btn-success{
+
+    background:var(--success);
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:12px 20px;
+
+}
+
+.btn-danger{
+
+    background:var(--danger);
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:12px 20px;
+
+}
+
+/* ========================= */
+/* FORM */
+/* ========================= */
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:18px;
+
+}
+
+.form-group{
+
+    display:flex;
+    flex-direction:column;
+
+    margin-bottom:15px;
+
+}
+
+label{
+
+    margin-bottom:8px;
+
+    color:#cbd5e1;
+
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#0f172a;
+
+    color:white;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    outline:none;
+
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    border-color:#38bdf8;
+
+}
+
+/* ========================= */
+/* TABLE */
+/* ========================= */
 
 table{
+
     width:100%;
+
     border-collapse:collapse;
-    margin-top:20px;
-    background:#1e293b;
+
+    margin-top:25px;
+
+    background:var(--card);
+
+    border-radius:12px;
+
+    overflow:hidden;
+
 }
 
 th{
-    background:#2563eb;
+
+    background:var(--primary);
+
     padding:15px;
+
     text-align:left;
+
 }
 
 td{
+
     padding:15px;
-    border-bottom:1px solid #334155;
+
+    border-bottom:1px solid var(--border);
+
 }
 
-input{
-    width:320px;
-    padding:12px;
-    border-radius:8px;
-    border:1px solid #334155;
-    background:#1e293b;
-    color:#fff;
+tbody tr:hover{
+
+    background:var(--cardHover);
+
 }
 
-button{
-    padding:12px 18px;
+/* ========================= */
+/* STATUS */
+/* ========================= */
+
+.status-ok{
+
+    color:#22c55e;
+    font-weight:bold;
+
+}
+
+.status-warning{
+
+    color:#f59e0b;
+    font-weight:bold;
+
+}
+
+.status-danger{
+
+    color:#ef4444;
+    font-weight:bold;
+
+}
+
+/* ========================= */
+/* MODAL */
+/* ========================= */
+
+.modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999;
+
+}
+
+.modal-content{
+
+    width:92%;
+
+    max-width:1100px;
+
+    background:#111827;
+
+    border-radius:15px;
+
+    overflow:hidden;
+
+    animation:modal .25s;
+
+}
+
+@keyframes modal{
+
+    from{
+
+        opacity:0;
+        transform:scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1);
+
+    }
+
+}
+
+.modal-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.modal-header button{
+
     border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:#fff;
-    cursor:pointer;
-    margin-left:10px;
+
+    background:none;
+
+    color:white;
+
+    font-size:28px;
+
 }
 
-button:hover{
-    background:#1d4ed8;
+.modal-body{
+
+    padding:25px;
+
+}
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    padding:20px;
+
+    border-top:1px solid var(--border);
+
+}
+
+/* ========================= */
+/* SCROLLBAR */
+/* ========================= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#334155;
+
+    border-radius:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0f172a;
+
+}
+
+/* ========================= */
+/* RESPONSIVO */
+/* ========================= */
+
+@media(max-width:900px){
+
+.app{
+
+    flex-direction:column;
+
+}
+
+.sidebar{
+
+    width:100%;
+
+}
+
+.topbar{
+
+    flex-direction:column;
+    align-items:flex-start;
+
+    gap:15px;
+
+}
+
+.cards{
+
+    grid-template-columns:1fr;
+
+}
+
+.form-grid{
+
+    grid-template-columns:1fr;
+
+}
+
+table{
+
+    display:block;
+    overflow-x:auto;
+
+}
+
 }
