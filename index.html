@@ -17,16 +17,76 @@
       <p>SGC v0.3.0</p>
     </div>
 
-    <nav>
-      <button class="menu-item active" data-page="dashboard">🏠 Dashboard</button>
-      <button class="menu-item" data-page="sessao">📋 Nova Sessão</button>
-      <button class="menu-item" data-page="instrumentos">🧰 Instrumentos</button>
-      <button class="menu-item" data-page="clientes">👥 Clientes</button>
-      <button class="menu-item" data-page="aeronaves">🚁 Aeronaves</button>
-      <button class="menu-item" data-page="equipamentos">🧪 Equipamentos</button>
-      <button class="menu-item" data-page="historico">📚 Histórico</button>
-      <button class="menu-item" data-page="configuracoes">⚙️ Configurações</button>
-    </nav>
+   <nav>
+
+    <div class="menu-group">
+
+        <h4>PRINCIPAL</h4>
+
+        <button class="menu-item active" data-page="dashboard">
+            🏠 Dashboard
+        </button>
+
+    </div>
+
+
+    <div class="menu-group">
+
+        <h4>SESSÕES</h4>
+
+        <button class="menu-item" data-page="sessao">
+            📋 Nova Sessão
+        </button>
+
+        <button class="menu-item" data-page="emAndamento">
+            ⏳ Em andamento
+        </button>
+
+        <button class="menu-item" data-page="finalizadas">
+            ✅ Finalizadas
+        </button>
+
+    </div>
+
+
+    <div class="menu-group">
+
+        <h4>CADASTROS</h4>
+
+        <button class="menu-item" data-page="instrumentos">
+            🧰 Instrumentos
+        </button>
+
+        <button class="menu-item" data-page="clientes">
+            👥 Clientes
+        </button>
+
+        <button class="menu-item" data-page="aeronaves">
+            🚁 Aeronaves
+        </button>
+
+        <button class="menu-item" data-page="equipamentos">
+            🧪 Equipamentos
+        </button>
+
+    </div>
+
+
+    <div class="menu-group">
+
+        <h4>GERENCIAMENTO</h4>
+
+        <button class="menu-item" data-page="historico">
+            📚 Histórico
+        </button>
+
+        <button class="menu-item" data-page="configuracoes">
+            ⚙ Configurações
+        </button>
+
+    </div>
+
+</nav>
   </aside>
 
   <!-- CONTEÚDO -->
@@ -309,7 +369,86 @@
         </tbody>
       </table>
     </section>
+<section id="emAndamento" class="page">
 
+<div class="page-header">
+<h2>Sessões em Andamento</h2>
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>OS</th>
+
+<th>Cliente</th>
+
+<th>Aeronave</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="listaEmAndamento">
+
+<tr>
+
+<td colspan="4">
+Nenhuma sessão em andamento.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
+
+
+<section id="finalizadas" class="page">
+
+<div class="page-header">
+<h2>Sessões Finalizadas</h2>
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>OS</th>
+
+<th>Cliente</th>
+
+<th>Data</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody id="listaFinalizadas">
+
+<tr>
+
+<td colspan="4">
+Nenhuma sessão finalizada.
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</section>
     <!-- CONFIGURAÇÕES -->
     <section id="configuracoes" class="page">
       <h2>Configurações</h2>
