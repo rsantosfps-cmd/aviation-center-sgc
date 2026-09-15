@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<title>Aviation Center SGC — Definitivo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-icon">🚁</div><div><b>Aviation Center</b><small>SGC • Definitivo</small></div></div>
+  <nav>
+    <button class="nav active" data-view="dashboard">Dashboard</button>
+    <button class="nav" data-view="session">Nova Sessão</button>
+    <button class="nav" data-view="aircraft">Aeronaves</button>
+    <button class="nav" data-view="clients">Clientes</button>
+    <button class="nav" data-view="sessions">Histórico</button>
+    <button class="nav" data-view="backup">Backup</button>
+  </nav>
+  <div class="connection"><span id="connectionDot"></span><span id="connectionText">Offline/local</span></div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Gerenciamento de calibração</p></div>
+  <button class="primary" id="quickNew">+ Nova sessão</button>
+</header>
+
+<section id="view-dashboard" class="view">
+  <div class="cards">
+    <div class="card"><small>Sessões</small><strong id="dashTotal">0</strong></div>
+    <div class="card"><small>Em andamento</small><strong id="dashOpen">0</strong></div>
+    <div class="card"><small>Finalizadas</small><strong id="dashDone">0</strong></div>
+    <div class="card"><small>Aeronaves</small><strong id="dashAircraft">0</strong></div>
+  </div>
+  <div class="panel"><div class="panel-head"><h2>Últimas sessões</h2></div><div id="recentSessions" class="list"></div></div>
+</section>
+
+<section id="view-session" class="view hidden">
+  <div class="panel">
+    <div class="panel-head"><h2 id="sessionTitle">Nova sessão de calibração</h2><span id="sessionStatus" class="pill">Rascunho</span></div>
+    <div class="grid">
+      <label>OS<input id="os"></label><label>Data<input id="data" type="date"></label>
+      <label>Cliente<input id="cliente"></label><label>Validade<input id="validade" value="2 anos"></label>
+      <label>Fabricante<input id="fabricante"></label><label>P/N<input id="pn"></label>
+      <label>S/N<input id="sn"></label><label>Prefixo<input id="prefixo" placeholder="Ex.: PR-HKK"></label>
+      <label>Técnico responsável<input id="tecnico"></label>
+    </div>
+    <div class="panel compact">
+      <h3>Relatórios desta sessão</h3>
+      <p class="hint">Selecione somente os laudos que serão realizados. Os não selecionados não serão exibidos nem impressos.</p>
+      <div class="report-select">
+        <label><input type="checkbox" data-select-report="altimetro"> Altímetro</label>
+        <label><input type="checkbox" data-select-report="integracao"> Integração do Transponder e Altitude Encoder</label>
+        <label><input type="checkbox" data-select-report="encoder"> Encoder</label>
+        <label><input type="checkbox" data-select-report="transponder"> Transponder</label>
+        <label><input type="checkbox" data-select-report="airdata"> Air Data</label>
+      </div>
+    </div>
+    <label class="full">Observações / ajustes realizados<textarea id="observacoesAjustes" rows="4"></textarea></label>
+    <div class="actions"><button class="secondary" id="saveDraft">Salvar rascunho</button><button class="primary" id="finishSession">Finalizar sessão</button><button class="ghost danger hidden" id="deleteSession">Excluir</button></div>
+  </div>
+
+  <div class="panel">
+    <div class="tabs" id="reportTabs"></div>
+    <div id="reports"></div>
+    <div class="actions bottom"><button class="secondary" id="saveReport">Salvar dados</button><button class="secondary" id="downloadReport">Baixar relatório</button><button class="primary" id="printReport">Imprimir / gerar PDF</button></div>
+  </div>
+</section>
+
+<section id="view-aircraft" class="view hidden">
+  <div class="panel"><div class="panel-head"><h2>Arquivo das aeronaves</h2></div><div id="aircraftList" class="list"></div></div>
+</section>
+
+<section id="view-clients" class="view hidden">
+  <div class="panel"><div class="panel-head"><h2>Clientes</h2></div><div id="clientList" class="list"></div></div>
+</section>
+
+<section id="view-sessions" class="view hidden">
+  <div class="panel"><div class="panel-head"><h2>Histórico de serviços</h2><button class="primary" id="newFromList">+ Nova sessão</button></div><div id="sessionsList" class="list"></div></div>
+</section>
+
+<section id="view-backup" class="view hidden">
+  <div class="panel">
+    <div class="panel-head"><h2>Backup local</h2></div>
+    <p>Os dados são salvos no dispositivo. Exporte o JSON para guardar uma cópia e importar em outro aparelho.</p>
+    <div class="backup-actions"><button class="primary" id="exportBackup">Exportar backup JSON</button><label class="secondary filebtn">Importar backup JSON<input type="file" id="importBackup" accept=".json,application/json"></label></div>
+    <div class="notice">O SGC funciona localmente sem depender do Google Sheets. Para sincronização automática entre dispositivos é necessário conectar um backend/cloud; esta versão mantém a fila local pronta para sincronização.</div>
+  </div>
+</section>
+</main>
+</div>
+<div id="printRoot"></div>
+<script src="app.js"></script>
+</body>
+</html>
