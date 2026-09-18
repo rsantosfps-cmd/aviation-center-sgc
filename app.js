@@ -39,7 +39,33 @@ function fillSession(s,openReports=true){currentId=s.id; set("os",s.meta.os);set
 function collectMeta(s){["os","data","cliente","validade","fabricante","pn","sn","prefixo","tecnico"].forEach(k=>{const el=document.getElementById(k);if(el)s.meta[k]=el.value.trim()});s.selectedReports=[...document.querySelectorAll("[data-select-report]:checked")].map(x=>x.dataset.selectReport)}
 function collectObservation(s){const el=document.getElementById("observacoesAjustes");if(el)s.observacoesAjustes=el.value||""}
 function resetNewCalibrationForm(){newSession()}
-function saveCalibrationRegistration(){let s=getCurrent();if(!s){s=blankSession();currentId=s.id;db.sessions.push(s)}collectMeta(s);if(!s.meta.data){alert("Informe a data da calibração.");return}if(!s.selectedReports.length){alert("Selecione pelo menos um laudo.");return}s.status="Salva";s.updatedAt=new Date().toISOString();saveDB();setReportEditorVisible(true);renderReportTabs(s);renderAllTables(s);showView("session");document.getElementById("reportEditorPanel")?.scrollIntoView({behavior:"smooth",block:"start"});alert("Calibração salva. Agora preencha os laudos selecionados.")}
+function saveCalibrationRegistration(){
+  let s=getCurrent();
+  if(!s){s=blankSession();currentId=s.id;db.sessions.push(s)}
+  collectMeta(s);
+  if(!s.meta.data){alert("Informe a data da calibração.");return}
+  if(!s.selectedReports.length){alert("Selecione pelo menos um laudo.");return}
+  s.status="Salva";
+  s.updatedAt=new Date().toISOString();
+  saveDB();
+
+  // Depois de salvar o cadastro, abre imediatamente os laudos selecionados.
+  // O scroll é feito no container principal (.main), que é quem possui overflow no iPad/PWA.
+  setReportEditorVisible(true);
+  renderReportTabs(s);
+  renderAllTables(s);
+  showView("session");
+  const panel=document.getElementById("reportEditorPanel");
+  const main=document.querySelector(".main");
+  if(panel){
+    panel.classList.remove("hidden");
+    requestAnimationFrame(()=>{
+      const top=Math.max(0,panel.offsetTop-20);
+      if(main)main.scrollTo({top,behavior:"smooth"});
+      else panel.scrollIntoView({behavior:"smooth",block:"start"});
+    });
+  }
+}
 function saveCurrent(){let s=getCurrent();if(!s){alert("Abra uma calibração antes de salvar os laudos.");return}collectMeta(s);collectTables(s);collectObservation(s);s.status="Salva";s.updatedAt=new Date().toISOString();saveDB();alert("Calibração salva com sucesso.")}
 function buildScaleMap(s){const byAltitude={};ALT_SCALE.forEach((alt,i)=>{byAltitude[alt]=s.reports.altimetro.scale[i].lido||""});return byAltitude}
 function syncScaleFromFriction(s){const byAltitude={};ALT_FRICTION.forEach((alt,i)=>{byAltitude[alt]=s.reports.altimetro.friction[i].com||""});s.reports.altimetro.scale.forEach((r,i)=>{if(Object.prototype.hasOwnProperty.call(byAltitude,ALT_SCALE[i]))r.lido=byAltitude[ALT_SCALE[i]]})}

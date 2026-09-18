@@ -1,4 +1,4 @@
-const CACHE = "aviation-center-calibracoes-v1.9-backend";
+const CACHE = "aviation-center-calibracoes-v1.9.2-backend-config";
 const APP_SHELL = [
   "./",
   "./index.html",
