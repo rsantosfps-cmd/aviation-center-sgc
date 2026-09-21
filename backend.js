@@ -1,0 +1,84 @@
+// Backend offline-first do Aviation Center Calibrações.
+// Implementação sem biblioteca externa: usa Supabase Auth + REST API.
+(function(){
+  const C=window.ACS_BACKEND_CONFIG||{};
+  const SESSION_KEY="acs_backend_auth_v1";
+  let timer=null, syncing=false;
+  function configured(){return C.enabled!==false && /^https:\/\//.test(C.url||"") && !!C.anonKey;}
+  function getAuth(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||"null")}catch(_){return null}}
+  function setAuth(x){if(x)localStorage.setItem(SESSION_KEY,JSON.stringify(x));else localStorage.removeItem(SESSION_KEY);updateUI();}
+  function headers(token){return {"apikey":C.anonKey,"Authorization":"Bearer "+token,"Content-Type":"application/json"};}
+  async function authRequest(path,body){const r=await fetch(C.url+"/auth/v1/"+path,{method:"POST",headers:{apikey:C.anonKey,"Content-Type":"application/json"},body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error_description||j.msg||j.message||"Falha na autenticação");return j;}
+  async function signup(email,password){if(!configured())throw new Error("Configure o backend primeiro.");return authRequest("signup",{email,password});}
+  async function login(email,password,localDb){
+    if(!configured())throw new Error("Configure o backend primeiro.");
+    const j=await authRequest("token?grant_type=password",{email,password});
+    if(!j.access_token)throw new Error("A conta precisa confirmar o e-mail antes de entrar.");
+    setAuth(j);
+    await syncNow(localDb || window.ACSGetDB?.());
+    return j;
+  }
+  async function refresh(){const a=getAuth();if(!a?.refresh_token||!configured())return null;try{const j=await authRequest("token?grant_type=refresh_token",{refresh_token:a.refresh_token});setAuth(j);return j}catch(_){setAuth(null);return null}}
+  async function api(path,opts={}){let a=getAuth();if(!a?.access_token)throw new Error("Não autenticado");let r=await fetch(C.url+path,{...opts,headers:{...headers(a.access_token),...(opts.headers||{})}});if(r.status===401){a=await refresh();if(!a?.access_token)throw new Error("Sessão expirada. Entre novamente.");r=await fetch(C.url+path,{...opts,headers:{...headers(a.access_token),...(opts.headers||{})}})}const text=await r.text();let j={};try{j=text?JSON.parse(text):{}}catch(_){j=text}if(!r.ok)throw new Error(j.message||j.error||j.hint||"Erro no backend");return j;}
+  function clone(x){return JSON.parse(JSON.stringify(x));}
+  function stamp(x,trash=false){return String(x?.updatedAt||x?.createdAt||(trash?x?.deletedAt:"")||"");}
+  function mergeStates(local,cloud){
+    const out=clone(local||{sessions:[],trash:[]});
+    out.sessions=Array.isArray(out.sessions)?out.sessions:[];
+    out.trash=Array.isArray(out.trash)?out.trash:[];
+    const mergeBy=(a,b,key,trash=false)=>{
+      const map=new Map();
+      [...(a||[]),...(b||[])].forEach(x=>{
+        if(!x||!x[key])return;
+        const old=map.get(x[key]);
+        if(!old || stamp(x,trash)>=stamp(old,trash))map.set(x[key],clone(x));
+      });
+      return [...map.values()];
+    };
+    out.sessions=mergeBy(local?.sessions,cloud?.sessions,false);
+    out.trash=mergeBy(local?.trash,cloud?.trash,true);
+    return out;
+  }
+  async function syncNow(localDb){
+    if(!configured())return {configured:false};
+    if(syncing)return {busy:true};
+    syncing=true;
+    try{
+      let a=getAuth();if(!a?.access_token)return {authenticated:false};
+      const local=clone(localDb||window.ACSGetDB?.()||{sessions:[],trash:[]});
+      let rows=await api("/rest/v1/app_state?select=payload,updated_at&owner_id=eq."+encodeURIComponent(a.user.id));
+      const cloud=rows?.[0]?.payload||{sessions:[],trash:[]};
+      const merged=mergeStates(local,cloud);
+      // Sempre grava a mesclagem. Assim, uma calibração feita offline nunca é
+      // perdida quando o aparelho volta a ficar online.
+      await push(merged);
+      if(window.ACSBackendApplyState)window.ACSBackendApplyState(merged);
+      setStatus("Sincronizado com a nuvem.",true);
+      return {ok:true,state:merged};
+    }catch(e){setStatus("Backend: "+e.message,false);return {ok:false,error:e};}
+    finally{syncing=false;}
+  }
+  async function push(db){
+    const a=getAuth();if(!a?.access_token||!configured())return false;
+    await api("/rest/v1/app_state?on_conflict=owner_id",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({owner_id:a.user.id,payload:clone(db),updated_at:new Date().toISOString()})});
+    return true;
+  }
+  function queuePush(db){
+    if(!configured()||!getAuth()?.access_token)return;
+    clearTimeout(timer);
+    timer=setTimeout(()=>syncNow(db).catch(e=>setStatus("Alteração local; sincronização pendente.",false)),700);
+  }
+  function logout(){setAuth(null);setStatus("Backend conectado, mas sem sessão.",false);}
+  function setStatus(msg,ok){const el=document.getElementById("backendStatus");if(el)el.textContent=msg;const b=document.getElementById("backendBadge");if(b){b.textContent=ok?"Sincronizado":"Backend";b.className="pill "+(ok?"backend-ok":"");}}
+  function updateUI(){const cfg=configured(),a=getAuth();const st=document.getElementById("backendStatus"),badge=document.getElementById("backendBadge"),login=document.getElementById("backendLogin"),signup=document.getElementById("backendSignup"),logoutBtn=document.getElementById("backendLogout"),sync=document.getElementById("backendSync");if(!st)return;if(!cfg){st.textContent="Backend não configurado. O sistema continua 100% local/offline.";badge.textContent="Local";login.disabled=signup.disabled=sync.disabled=true;logoutBtn.classList.add("hidden");return}login.disabled=signup.disabled=false;sync.disabled=!a?.access_token;logoutBtn.classList.toggle("hidden",!a?.access_token);if(a?.user?.email)st.textContent="Conta conectada: "+a.user.email;else st.textContent="Backend configurado. Entre para sincronizar.";}
+  async function init(){updateUI();if(configured()&&getAuth()?.refresh_token){await refresh();if(getAuth()?.access_token)await syncNow(window.ACSGetDB?.());}}
+  window.addEventListener("online",()=>{if(getAuth()?.access_token)syncNow(window.ACSGetDB?.());});
+  window.ACSBackend={configured,signup,login,logout,syncNow,queuePush,updateUI,init};
+  document.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById("backendLogin")?.addEventListener("click",async()=>{const e=document.getElementById("backendEmail").value.trim(),p=document.getElementById("backendPassword").value,m=document.getElementById("backendMessage");try{await login(e,p,window.ACSGetDB?.());if(m)m.textContent="Login realizado e sincronização concluída.";}catch(x){if(m)m.textContent=x.message;}updateUI();});
+    document.getElementById("backendSignup")?.addEventListener("click",async()=>{const e=document.getElementById("backendEmail").value.trim(),p=document.getElementById("backendPassword").value,p2=document.getElementById("backendPassword2").value,m=document.getElementById("backendMessage");if(p!==p2){m.textContent="As senhas não conferem.";return}try{const j=await signup(e,p);m.textContent=j.access_token?"Conta criada e conectada.":"Conta criada. Confirme o e-mail e depois entre.";}catch(x){m.textContent=x.message;}updateUI();});
+    document.getElementById("backendLogout")?.addEventListener("click",()=>{logout();});
+    document.getElementById("backendSync")?.addEventListener("click",async()=>{const m=document.getElementById("backendMessage");const r=await syncNow(window.ACSGetDB?.());if(m)m.textContent=r?.ok?"Sincronização concluída.":(r?.error?.message||"Não foi possível sincronizar agora.");});
+    init();
+  });
+})();
