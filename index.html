@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aviation Center Calibrações">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<title>Aviation Center Calibrações</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ACS TRANSPONDER TABLE LAYOUT */
+.acs-transponder-table-section{
+  width:100%;
+  margin:18px 0 22px;
+  border:1px solid #cfd5dc;
+  border-radius:8px;
+  overflow:hidden;
+  background:#fff;
+}
+.acs-transponder-table-section > .acs-transponder-section-title{
+  margin:0;
+  padding:10px 12px;
+  background:#eef1f4;
+  border-bottom:1px solid #cfd5dc;
+  font-weight:700;
+  font-size:13px;
+  line-height:1.25;
+}
+.acs-transponder-table{
+  width:100%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.acs-transponder-table th,
+.acs-transponder-table td{
+  border:1px solid #d8dde3;
+  padding:7px 8px;
+  vertical-align:middle;
+  font-size:12px;
+}
+.acs-transponder-table th{
+  background:#f7f8fa;
+  font-weight:700;
+  text-align:center;
+}
+.acs-transponder-table td:first-child{
+  text-align:left;
+}
+.acs-transponder-table input,
+.acs-transponder-table select,
+.acs-transponder-table textarea{
+  width:100%;
+  box-sizing:border-box;
+  margin:0;
+}
+.acs-transponder-table .acs-result-cell{
+  text-align:center;
+  white-space:nowrap;
+}
+@media (max-width:760px){
+  .acs-transponder-table{
+    min-width:720px;
+  }
+  .acs-transponder-table-section{
+    overflow-x:auto;
+  }
+}
+@media print{
+  .acs-transponder-table-section{
+    break-inside:avoid;
+    page-break-inside:avoid;
+    border-radius:0;
+    margin:10px 0 14px;
+  }
+  .acs-transponder-table-section > .acs-transponder-section-title{
+    break-after:avoid;
+    page-break-after:avoid;
+  }
+  .acs-transponder-table th,
+  .acs-transponder-table td{
+    font-size:10px;
+    padding:5px 6px;
+  }
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">AC</div><div class="brand-text"><b>Aviation Center Calibrações</b></div><button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Recolher menu" title="Recolher menu">‹</button></div>
+    <nav>
+      <button data-view="dashboard" class="nav active" data-icon="⌂"><span class="nav-label">Dashboard</span></button>
+      <button data-view="session" class="nav" data-icon="＋"><span class="nav-label">Nova calibração</span></button>
+      <button data-view="sessions" class="nav" data-icon="▣"><span class="nav-label">Calibrações</span></button>
+      <button data-view="clients" class="nav" data-icon="♙"><span class="nav-label">Clientes</span></button>
+      <button data-view="aircraft" class="nav" data-icon="✈"><span class="nav-label">Aeronaves</span></button>
+            <button data-view="history" class="nav" data-icon="↻"><span class="nav-label">Histórico</span></button>
+      <button data-view="trash" class="nav" data-icon="⌫"><span class="nav-label">Lixeira</span></button>
+      <button data-view="backup" class="nav" data-icon="⇩"><span class="nav-label">Backup</span></button>
+      <button data-view="settings" class="nav" data-icon="⚙"><span class="nav-label">Configurações</span></button>
+    </nav>
+    <div class="offline" id="networkStatus"><span></span> Verificando conexão…</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar"><div><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Gerenciamento de calibração</p></div>
+      <button class="primary" id="quickNew">+ Nova calibração</button>
+    </header>
+
+    <section id="view-dashboard" class="view">
+      <div class="dashboard-hero">
+        <div class="hero-copy">
+          <div class="eyebrow">CENTRO DE CALIBRAÇÕES</div>
+          <h2>Bem-vindo à <span>Aviation Center</span></h2>
+          <p>Gestão, calibração e histórico dos seus instrumentos.</p>
+        </div>
+        <div class="hero-mark">✈</div>
+      </div>
+      <div class="dashboard-layout">
+        <div class="dashboard-main">
+          <div class="feature-grid">
+            <button class="feature-card" data-feature-view="sessions"><span class="feature-icon">☑</span><strong>CALIBRAÇÕES</strong><small>Registre e acompanhe calibrações realizadas.</small></button>
+            <button class="feature-card" data-feature-view="sessions"><span class="feature-icon">▤</span><strong>LAUDOS</strong><small>Visualize, imprima e gerencie seus laudos.</small></button>
+            <button class="feature-card" data-feature-view="history"><span class="feature-icon">↻</span><strong>HISTÓRICO</strong><small>Consulte o histórico completo dos serviços.</small></button>
+            <button class="feature-card" data-feature-view="session"><span class="feature-icon">⚒</span><strong>NOVA CALIBRAÇÃO</strong><small>Acesse rapidamente uma nova calibração.</small></button>
+            <button class="feature-card" data-feature-view="clients"><span class="feature-icon">▥</span><strong>CLIENTES</strong><small>Consulte clientes, aeronaves e validade.</small></button>
+          </div>
+          <div class="panel dashboard-recent">
+            <div class="panel-head"><h2>Últimas calibrações</h2><button class="text-button" data-feature-view="sessions">VER TODAS</button></div>
+            <div id="recentSessions" class="empty">Nenhuma calibração cadastrada.</div>
+          </div>
+        </div>
+        <aside class="dashboard-side">
+          <div class="status-card">
+            <div class="status-line"><span class="status-icon">▣</span><div><small>CALIBRAÇÕES SALVAS</small><strong id="dashDone">0</strong></div></div>
+            <div class="status-line"><span class="status-icon">✓</span><div><small>ÚLTIMA OS</small><strong id="dashLast">—</strong></div></div>
+            <div class="status-line"><span class="status-icon">◷</span><div><small>REGISTROS</small><strong id="dashTotal">0</strong></div></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="view-session" class="view hidden">
+      <div class="panel registration-panel">
+        <div class="panel-head"><h2 id="sessionTitle">Nova calibração</h2><span class="pill" id="sessionStatus">Nova</span></div>
+        <div class="grid registration-grid">
+          <label>OS<input id="os" inputmode="numeric" autocomplete="off"></label>
+          <label>Data<input id="data" autocomplete="off" type="date"></label>
+          <label>Cliente<input id="cliente" inputmode="text" autocomplete="off"></label>
+          <label>Prefixo da aeronave<input id="prefixo" inputmode="text" autocomplete="off" placeholder="Ex.: PR-ABC"></label>
+        </div>
+        <div class="report-selection">
+          <div class="selection-title">Relatórios desta sessão</div>
+          <div class="selection-grid">
+            <label><input type="checkbox" data-select-report="altimetro"> Altímetro</label>
+            <label><input type="checkbox" data-select-report="integracao"> Integração do Transponder e Altitude Encoder</label>
+            <label><input type="checkbox" data-select-report="encoder"> Encoder</label>
+            <label><input type="checkbox" data-select-report="transponder"> Transponder</label>
+            <label><input type="checkbox" data-select-report="airdata"> Air Data</label>
+          </div>
+          <p class="hint">Somente os relatórios selecionados aparecem, são salvos e entram na impressão/PDF.</p>
+        </div>
+        <div class="actions"><button class="primary" id="saveCalibration">Salvar calibração</button></div>
+      </div>
+
+      <div id="reportEditorPanel" class="panel report-editor-panel hidden">
+        <div class="tabs">
+          <div id="reportTabs"></div>
+        </div>
+
+        <div id="report-altimetro" class="report">
+          <h2>Laudo Técnico do Altímetro</h2>
+          <div id="meta-altimetro" class="report-instrument-meta"></div>
+          <h3>Teste de atrito — pressão decrescente</h3>
+          <div id="frictionTable"></div>
+          <h3>Erro de escala — pressão decrescente</h3>
+          <div id="scaleTable"></div>
+          <div class="two-cols">
+            <div><h3>Vazamento de caixa</h3><div id="leakTable"></div></div>
+            <div><h3>Erro de escala barômetro</h3><div id="baroTable"></div></div>
+          </div>
+          <h3>Histerese — altitude máxima de operação (pressão crescente)</h3>
+          <div id="hystTable"></div>
+        </div>
+
+        <div id="report-integracao" class="report hidden">
+          <h2>Laudo Técnico — Integração do Transponder e Altitude Encoder</h2>
+          <div id="meta-integracao" class="report-instrument-meta"></div>
+          <p class="hint">Preencha a leitura do altímetro e a leitura transmitida pelo transponder.</p>
+          <div id="integrationTable"></div>
+        </div>
+
+        <div id="report-encoder" class="report hidden">
+          <h2>Laudo Técnico do Encoder</h2>
+          <div id="meta-encoder" class="report-instrument-meta"></div>
+          <p class="hint">Os pontos nominais seguem o modelo do documento principal. Informe apenas os pontos de transição atuais.</p>
+          <div id="encoderTable"></div>
+        </div>
+
+        <div id="report-transponder" class="report hidden">
+          <h2>Laudo Técnico do Transponder</h2>
+          <div id="meta-transponder" class="report-instrument-meta"></div>
+          <div id="transponderForm"></div>
+        </div>
+
+        <div id="report-airdata" class="report hidden">
+          <h2>Laudo Técnico do Air Data</h2>
+          <div id="meta-airdata" class="report-instrument-meta"></div>
+          <p class="hint">Air Data é 100% manual. Nenhum valor é copiado automaticamente de outro relatório.</p>
+          <div id="airdataForm"></div>
+        </div>
+
+        <div class="observation-box final-observation"><label>Observações / ajustes realizados<textarea id="observacoesAjustes" rows="6" placeholder="Descreva ajustes, regulagens, intervenções realizadas ou observações desta calibração..."></textarea></label></div>
+        <div class="actions bottom"><button class="primary" id="saveReport">Salvar calibração</button><button class="secondary" id="downloadReport">Baixar relatório</button><button class="primary" id="printReport">Imprimir / gerar PDF</button></div>
+      </div>
+    </section>
+
+    <section id="view-sessions" class="view hidden">
+      <div class="panel"><div class="panel-head"><h2>Calibrações salvas</h2><button class="primary" id="newFromList">+ Nova calibração</button></div>
+      <div id="sessionsList" class="session-list"></div></div>
+    </section>
+
+
+    <section id="view-clients" class="view hidden">
+      <div class="panel"><div class="panel-head"><h2>Clientes</h2></div><p class="hint">Visão consolidada dos clientes e das aeronaves registradas nas calibrações.</p><div id="clientsList" class="session-list"></div></div>
+    </section>
+
+    <section id="view-aircraft" class="view hidden">
+      <div class="panel"><div class="panel-head"><h2>Aeronaves</h2></div><p class="hint">Histórico resumido por prefixo. Os registros anteriores permanecem nas calibrações.</p><div id="aircraftList" class="session-list"></div></div>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <div class="panel"><div class="panel-head"><h2>Histórico de serviços</h2></div><p class="hint">Todas as calibrações salvas, mantendo os registros anteriores.</p><div id="historyList" class="session-list"></div></div>
+    </section>
+
+    <section id="view-trash" class="view hidden">
+  <div class="panel">
+    <div class="panel-head"><h2>Lixeira</h2><span class="pill">7 dias</span></div>
+    <p class="hint">Uma calibração apagada permanece aqui por 7 dias com todos os seus relatórios. Durante esse período ela pode ser restaurada. Depois, a exclusão é definitiva.</p>
+    <div id="trashList" class="session-list"></div>
+  </div>
+</section>
+
+<section id="view-backup" class="view hidden">
+      <div class="panel"><div class="panel-head"><h2>Backup local</h2></div>
+        <p>Os dados ficam armazenados neste dispositivo. Exporte um backup antes de trocar de aparelho ou limpar o navegador.</p>
+        <div class="backup-actions"><button class="primary" id="exportBackup">Exportar backup JSON</button><label class="secondary filebtn">Importar backup JSON<input type="file" id="importBackup" accept=".json,application/json"></label></div>
+        <div class="notice">O sistema não depende do Google Sheets para salvar ou imprimir. A impressão usa um modelo próprio de 4 páginas.</div>
+      </div>
+    </section>
+
+    <section id="view-settings" class="view hidden">
+      <div class="panel">
+        <div class="panel-head"><h2>Backend e sincronização</h2><span class="pill" id="backendBadge">Local</span></div>
+        <p class="hint">O trabalho continua offline. Quando o backend estiver configurado e você entrar com a mesma conta em outro aparelho, as calibrações poderão ser sincronizadas.</p>
+        <div class="backend-card">
+          <div class="backend-status" id="backendStatus">Backend não configurado.</div>
+          <div class="field-grid backend-grid">
+            <div class="field full"><label>E-mail<input id="backendEmail" type="email" autocomplete="username" placeholder="seu@email.com"></label></div>
+            <div class="field"><label>Senha<input id="backendPassword" type="password" autocomplete="current-password" placeholder="••••••••"></label></div>
+            <div class="field"><label>Confirmar senha (cadastro)<input id="backendPassword2" type="password" autocomplete="new-password" placeholder="••••••••"></label></div>
+          </div>
+          <div class="actions"><button class="primary" id="backendLogin">Entrar e sincronizar</button><button class="secondary" id="backendSignup">Criar conta</button><button class="secondary hidden" id="backendLogout">Sair</button><button class="ghost" id="backendSync">Sincronizar agora</button></div>
+          <p class="hint" id="backendMessage"></p>
+        </div>
+        <div class="notice">A chave pública do Supabase pode ficar no aplicativo. Nunca coloque uma chave <b>service_role</b> aqui. O banco usa regras de segurança para limitar os dados à conta autenticada.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="printChooser" class="print-chooser hidden" aria-hidden="true">
+  <div class="print-chooser-backdrop" data-close-print-chooser></div>
+  <div class="print-chooser-card" role="dialog" aria-modal="true" aria-labelledby="printChooserTitle">
+    <div class="panel-head"><h2 id="printChooserTitle">Escolher laudos para impressão</h2><button class="ghost" type="button" data-close-print-chooser>Fechar</button></div>
+    <p class="hint">Selecione somente os laudos que deseja imprimir. Isso não altera os laudos salvos na calibração.</p>
+    <div id="printChooserList" class="print-chooser-list"></div>
+    <div class="actions">
+      <button class="secondary" type="button" id="printChooserAll">Selecionar todos</button>
+      <button class="ghost" type="button" data-close-print-chooser>Cancelar</button>
+      <button class="primary" type="button" id="printChooserPrint">Imprimir selecionados</button>
+    </div>
+  </div>
+</div>
+<div id="printRoot" aria-hidden="true"></div>
+<script>document.addEventListener("click",e=>{const b=e.target.closest("[data-feature-view]");if(b&&window.showView)showView(b.dataset.featureView)});</script>
+<script src="pdf.js"></script>
+<script src="backend-config.js"></script>
+<script src="backend.js"></script>
+<script src="app.js"></script>
+<script>
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>
